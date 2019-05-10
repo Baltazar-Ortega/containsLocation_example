@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>containsLocation()</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // This example requires the Geometry library. Include the libraries=geometry
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry">
+
+      /* 
+      Al iniciar el dashboard, se agarraran todos los anuncios. 
+      Se recorreran, y se colocaran marcadores (sin renderizarlos en el mapa) donde esten todos los puntos de los poligonos. 
+      Se crea un poligono (ej. pentagono) alrededor de la current position de la persona
+      Se utiliza containsLocation() para saber si por lo menos un punto está en ese poligono.
+      Si por lo menos uno está ? se muestra el anuncio : no se muestra el anuncio. 
+      */
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 24.886, lng: -70.269},
+          zoom: 5,
+        });
+
+        // Poligono de ubicacion de usuario (morado)
+        var triangleCoords = [
+          {lat: 25.774, lng: -80.19},
+          {lat: 18.466, lng: -66.118},
+          {lat: 32.321, lng: -64.757}
+        ];
+
+        var polyUser = new google.maps.Polygon({paths: triangleCoords, 
+          strokeColor: '#C71585',
+          fillColor: 'C71585',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        polyUser.setMap(map);
+
+        // Array de marcadores
+        var marcadoresPorPoligono = [];
+
+        // Coordenadas de los vertices de los poligonos
+        var coordenadasDentro = [
+          {lat: 29.802100372984423, lng: -69.302203125},
+          {lat: 29.266813116455456, lng: -69.3461484375},
+          {lat: 29.03653995779425, lng: -67.1488828125}
+        ];
+        var coordenadasDentro2 = [
+          {lat: 28.303957040563184, lng: -68.86275},
+          {lat: 27.760904088772758, lng: -72.7738828125},
+          {lat: 27.449363331709588, lng: -70.972125}
+        ];
+        var coordenadasDentro3 = [
+          {lat: 26.39143865127681, lng: -76.157671875},
+          {lat: 26.39143865127681, lng: -73.3891171875},
+          {lat: 26.54879214621588, lng: -68.5551328125}
+        ];
+        var coordenadasDentro4 = [
+          {lat: 26.07608836871497, lng: -66.7094296875},
+          {lat: 25.204505795125073, lng: -71.6313046875},
+          {lat: 24.486710671900607, lng: -69.126421875},
+          {lat: 23.119711097189104, lng: -67.544390625}
+        ];
+        var coordenadasFuera = [
+          {lat: 28.535851797444074, lng: -77.2563046875},
+          {lat: 29.496568794449143, lng: -74.0922421875 },
+          {lat: 31.540679794503053, lng: -77.6518125}
+        ];
+        var coordenadasFuera2 = [
+          {lat: 30.372460056593162, lng: -70.8402890625},
+          {lat: 33.35765971460837, lng: -71.49946875},
+          {lat: 32.509355964672324, lng: -58.623492187500005}
+        ];
+        var coordenadasFuera3 = [
+          {lat: 29.190112769023877, lng: -59.150835937500005},
+          {lat: 25.124956968996205, lng: -57.436968750000005},
+          {lat: 23.32163815547864, lng: -60.029742187500005},
+          {lat: 26.43079719103903, lng: -60.513140625000005}
+          
+        ];
+
+        // Crear marcadores
+        var marcadoresPoly1 = [];
+        var marcadoresPoly2 = [];
+        var marcadoresPoly3 = [];
+        var marcadoresPoly4 = [];
+        var marcadoresPoly5 = [];
+        var marcadoresPoly6 = [];
+        var marcadoresPoly7 = [];
+        coordenadasDentro.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'A'
+          });
+          marcadoresPoly1.push(marcador);
+          var contentString = 'A';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasDentro2.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'B'
+          });
+          marcadoresPoly2.push(marcador);
+          var contentString = 'B';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasDentro3.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'C'
+          });
+          marcadoresPoly3.push(marcador);
+          var contentString = 'C';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasDentro4.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'D'
+          });
+          marcadoresPoly4.push(marcador);
+          var contentString = 'D';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasFuera.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'E'
+          });
+          marcadoresPoly5.push(marcador);
+          var contentString = 'E';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasFuera2.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'F'
+          });
+          marcadoresPoly6.push(marcador);
+          var contentString = 'F';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        coordenadasFuera3.forEach(function(el) {
+          var marcador = new google.maps.Marker({
+            position: el,
+            map: map,
+            title: 'G'
+          });
+          marcadoresPoly7.push(marcador);
+          var contentString = 'G';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+          marcador.addListener('click', function() {
+              infowindow.open(map, marcador);
+          });
+        });
+
+        // Meter marcadores por poligono al array grande
+        marcadoresPorPoligono.push(marcadoresPoly1);
+        marcadoresPorPoligono.push(marcadoresPoly2);
+        marcadoresPorPoligono.push(marcadoresPoly3);
+        marcadoresPorPoligono.push(marcadoresPoly4);
+        marcadoresPorPoligono.push(marcadoresPoly5);
+        marcadoresPorPoligono.push(marcadoresPoly6);
+        marcadoresPorPoligono.push(marcadoresPoly7);
+
+        console.log('Marcadores por poligono', marcadoresPorPoligono);
+
+
+        var array_poligonos = [];
+        // Crear poligonos
+        var poly1 = new google.maps.Polygon({paths: coordenadasDentro, 
+          strokeColor: '#FF0000',
+          fillColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        array_poligonos.push(poly1);
+        
+        var poly2 = new google.maps.Polygon({paths: coordenadasDentro2, 
+          strokeColor: '#FF8C00',
+          fillColor: '#FF8C00',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        array_poligonos.push(poly2);
+        
+        var poly3 = new google.maps.Polygon({paths: coordenadasDentro3, 
+          strokeColor: '#FFE4B5',
+          fillColor: '#FFE4B5',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        array_poligonos.push(poly3);
+        
+        var poly4 = new google.maps.Polygon({paths: coordenadasDentro4, 
+          strokeColor: '#BDB76B',
+          fillColor: '#BDB76B',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        var contentString = 'D';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        poly4.addListener('click', function() {
+            infowindow.open(map, poly4);
+        });
+        array_poligonos.push(poly4);
+
+        var poly5 = new google.maps.Polygon({paths: coordenadasFuera, 
+          strokeColor: '#008000',
+          fillColor: '#008000',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        var contentString = 'E';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        poly5.addListener('click', function() {
+            infowindow.open(map, poly5);
+        });
+        array_poligonos.push(poly5);
+
+
+        var poly6 = new google.maps.Polygon({paths: coordenadasFuera2, 
+          strokeColor: '#6B8E23',
+          fillColor: '#6B8E23',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        var contentString = 'F';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        poly6.addListener('click', function() {
+            infowindow.open(map, poly6);
+        });
+        array_poligonos.push(poly6);
+
+
+        var poly7 = new google.maps.Polygon({paths: coordenadasFuera3, 
+          strokeColor: '#B0C4DE',
+          fillColor: '#B0C4DE',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+        });
+        var contentString = 'G';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        poly7.addListener('click', function() {
+            infowindow.open(map, poly7);
+        });
+        array_poligonos.push(poly7);
+
+        console.log('Poligonos', array_poligonos);
+
+        // Renderizar poligonos
+        poly1.setMap(map);
+        poly2.setMap(map);
+        poly3.setMap(map);
+        poly4.setMap(map);
+        poly5.setMap(map);
+        poly6.setMap(map);
+        poly7.setMap(map);
+
+        
+        // Saber los poligonos que tienen un punto (por lo menos) dentro del area del usuario
+        var poligonosContenidos = [];
+
+        marcadoresPorPoligono.forEach(function(arrayMarcadores) { // poligono es un array de marcadores
+          // Accedemos a los marcadores de un poligono
+          for(var i = 0; i < arrayMarcadores.length; i++){
+            var marcadorLat = arrayMarcadores[i].getPosition().lat();
+            var marcadorLng = arrayMarcadores[i].getPosition().lng();
+            var curPosition = new google.maps.LatLng(marcadorLat, marcadorLng);
+            var marcadorContenido = google.maps.geometry.poly.containsLocation(curPosition, polyUser);
+            if (marcadorContenido) {
+              poligonosContenidos.push(arrayMarcadores);
+              break;
+            }
+          }
+        });
+        console.log('Poligonos contenidos', poligonosContenidos);
+        
+        // google.maps.geometry.poly.containsLocation(e.latLng, polyUser)
+
+        
+        /*
+        google.maps.event.addListener(map, 'click', function(e) {
+          var resultColor =
+              google.maps.geometry.poly.containsLocation(e.latLng, bermudaTriangle) ?
+              'blue' :
+              'red';
+
+          var resultPath =
+              google.maps.geometry.poly.containsLocation(e.latLng, bermudaTriangle) ?
+              // A triangle.
+              "m 0 -1 l 1 2 -2 0 z" :
+              google.maps.SymbolPath.CIRCLE;
+
+          var marcador = new google.maps.Marker({
+            position: e.latLng,
+            map: map,
+            icon: {
+              path: resultPath,
+              fillColor: resultColor,
+              fillOpacity: .2,
+              strokeColor: 'white',
+              strokeWeight: .5,
+              scale: 10
+            }
+          });
+
+          // Agregar marcador a array
+          marcadores.push(marcador.position);
+
+          var contentString = 'Location: ' +  marcador.position;
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+
+          marcador.addListener('click', function() {
+            infowindow.open(map, marcador);
+          });
+
+          // Obtener coordenadas de un marcador
+          // marcador.getPosition().lat() o lng()
+          // Ver marcadores actuales
+          console.log(marcadores);
+
+          var logrado = google.maps.geometry.poly.containsLocation(marcadores[0], bermudaTriangle)
+          var marcador2 = new google.maps.Marker({
+            position: marcadores[0],
+            map: map
+          });
+          console.log(logrado)
+
+
+        }); // Fin listener de map
+        */
+
+        /* Lista de puntos 13 dentro y 10 fuera 
+          DENTRO
+          lat: 29.802100372984423 lng: -69.302203125
+          lat: 29.266813116455456 lng: -69.3461484375
+          lat: 29.03653995779425 lng: -67.1488828125
+
+          lat: 28.303957040563184 lng: -68.86275
+          lat: 27.760904088772758 lng: -72.7738828125
+          lat: 27.449363331709588 lng: -70.972125
+
+          lat: 26.39143865127681 lng: -76.157671875
+          lat: 26.39143865127681 lng: -73.3891171875
+          lat: 26.54879214621588 lng: -68.5551328125
+
+          lat: 26.07608836871497 lng: -66.7094296875
+          lat: 25.204505795125073 lng: -71.6313046875
+          lat: 24.486710671900607 lng: -69.126421875
+          lat: 23.119711097189104 lng: -67.544390625
+
+          FUERA
+          lat: 28.535851797444074 lng: -77.2563046875
+          lat: 29.496568794449143 lng: -74.0922421875
+          lat: 31.540679794503053 lng: -77.6518125
+
+          lat: 30.372460056593162 lng: -70.8402890625
+          lat: 33.35765971460837 lng: -71.49946875
+          lat: 32.509355964672324 lng: -58.623492187500005
+
+          lat: 29.190112769023877 lng: -59.150835937500005
+          lat: 26.43079719103903 lng: -60.513140625000005
+          lat: 25.124956968996205 lng: -57.436968750000005
+          lat: 23.32163815547864 lng: -60.029742187500005
+        */
+
+        
+        
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry&callback=initMap"
+         async defer></script>
+  </body>
+</html>
